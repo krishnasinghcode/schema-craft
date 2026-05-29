@@ -2,6 +2,11 @@
 
 > Upload a JSON schema → get a fully working CRUD application instantly.
 
+## Live Demo
+🔗 [schema-craft-app.vercel.app](https://schema-craft-app.vercel.app)
+ 
+---
+
 ## What It Does
 
 SchemaCraft is a **metadata-driven application runtime**. You define your data structure once as a JSON config file, and the platform automatically generates:
