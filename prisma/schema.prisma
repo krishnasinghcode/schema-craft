@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schemas EntityConfig[]
+  records EntityRecord[]
+
+  @@map("users")
+}
+
+model EntityConfig {
+  id         String   @id @default(uuid())
+  name       String
+  title      String
+  schemaJson Json
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  records EntityRecord[]
+
+  @@unique([name, userId])
+  @@map("entity_configs")
+}
+
+model EntityRecord {
+  id           String   @id @default(uuid())
+  entityName   String
+  dataJson     Json
+  userId       String
+  entityId     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entity EntityConfig @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  @@map("entity_records")
+}
